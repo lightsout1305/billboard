@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 from .models import Post, Author
 
@@ -43,3 +44,16 @@ class TestPostDatabase(TestCase):
         self.assertEqual(f'{self.post.title}', 'Test post')
         self.assertEqual(f'{self.post.content}', 'Test content')
         self.assertEqual(f'{self.post.author.author.username}', 'Dima')
+
+
+class TestHomePage(TestCase):
+    def test_home_page_status_code(self):
+        response = self.client.get('/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_home_page_view(self):
+        response = self.client.get(reverse('post_list'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'listing/main.html')
+        self.assertContains(response, 'Доска объявлений')
+

@@ -1,7 +1,8 @@
 from django.contrib.auth.models import User
-from ckeditor.fields import RichTextField
+from ckeditor_uploader.fields import RichTextUploadingField
 from django.db.models import Sum
 from django.db import models
+from django.urls import reverse
 
 
 class Author(models.Model):
@@ -9,7 +10,7 @@ class Author(models.Model):
     author_rating = models.SmallIntegerField(default=0)
 
     def update_rating(self):
-        cont_rating = self.post_set.aggregate(contentRating=Sum('content_rating'))
+        cont_rating = self.post_set.aggregate(contentRating=Sum('rating'))
         contRat = 0
         contRat += cont_rating.get('contentRating')
 
@@ -20,11 +21,14 @@ class Author(models.Model):
         self.author_rating = contRat * 3 + commRat
         self.save()
 
+    def __str__(self):
+        return self.author.username
+
 
 class Post(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
-    content = RichTextField()
+    content = RichTextUploadingField()
     rating = models.SmallIntegerField(default=0)
     register_date = models.DateTimeField(auto_now_add=True)
     post_category = models.ManyToManyField('Category', through='PostCategory')
@@ -43,6 +47,9 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
+    def get_absolute_url(self):
+        return reverse('post_detail', args=[str(self.id)])
+
 
 class Category(models.Model):
     category_name = models.CharField(max_length=100)
@@ -58,7 +65,7 @@ class PostCategory(models.Model):
 
 
 class Comment(models.Model):
-    comment_text = RichTextField()
+    comment_text = RichTextUploadingField()
     comment_author = models.ForeignKey(User, on_delete=models.CASCADE)
     comment_rating = models.SmallIntegerField(default=0)
     comment_date = models.DateTimeField(auto_now_add=True)
@@ -75,6 +82,3 @@ class Comment(models.Model):
 class CategorySubs(models.Model):
     cat_sub_user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     cat_sub_category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True, null=True)
-
-
-# Create your models here.

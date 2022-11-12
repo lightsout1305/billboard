@@ -1,0 +1,33 @@
+{% extends 'flatpages/default.html' %}
+
+
+{% block title %}Доска объявлений{% endblock title %}
+
+{% block content %}
+{% for post in listings %}
+<div class="card">
+    <div class="card-header">
+        <a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a>
+        &middot;
+        <span class="text-muted">by {{ post.author }} |
+            {{ post.register_date }}</span>
+    </div>
+    <div class="card-body">
+        <p>{{ post.content|safe }}</p>
+{#        <a href="{% url 'article_edit' article.pk %}">Edit</a> |#}
+{#        <a href="{% url 'article_delete' article.pk %}">Delete</a>#}
+    </div>
+    <div class="card-footer">
+        {% for comm in post.comment_set.all %}
+        <p>
+            <span class="font-weight-bold">
+                {{ comm.comment_author }} &middot;
+            </span>
+            {{ comm.comment_text|safe }}
+        </p>
+        {% endfor %}
+    </div>
+<br />
+</div>
+{% endfor %}
+{% endblock content %}
