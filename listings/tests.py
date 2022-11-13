@@ -57,3 +57,40 @@ class TestHomePage(TestCase):
         self.assertTemplateUsed(response, 'listing/main.html')
         self.assertContains(response, 'Доска объявлений')
 
+
+class SignupLoginPageTests(TestCase):
+
+    username = "newuser"
+    email = "newuser@email.com"
+
+    def test_signup_page_status_code(self):
+        response = self.client.get("/accounts/signup/")
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_signup_url_by_name(self):
+        response = self.client.get(reverse("account_signup"))
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_signup_uses_correct_template(self):
+        response = self.client.get(reverse("account_signup"))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "account/signup.html")
+
+    def test_login_page_status_code(self):
+        response = self.client.get("/accounts/login/")
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_login_url_by_name(self):
+        response = self.client.get(reverse("account_login"))
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_login_uses_correct_template(self):
+        response = self.client.get(reverse("account_login"))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "account/login.html")
+
+    def test_signup_form(self):
+        new_user = User.objects.create_user(self.username, self.email)
+        self.assertEqual(User.objects.all().count(), 1)
+        self.assertEqual(User.objects.all()[0].username, self.username)
+        self.assertEqual(User.objects.all()[0].email, self.email)
