@@ -40,6 +40,10 @@
                         <a href="{% url 'account_signup' %}" class="btn btn-primary">Sign Up</a>
                     </div>
                     {% endif %}
+                    <form style="margin-left: 600px" class="d-flex" action="{% url 'search_results' %}" method="get">
+                        <input class="form-control me-2" type="search" name="q" placeholder="Search" aria-label="Search">
+                            <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
                 </div>
             </div>
         </header>

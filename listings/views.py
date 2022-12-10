@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, PermissionRequiredMixin
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
+from django.db.models import Q
 from django.urls import reverse_lazy
 
 from .models import Post, Author
@@ -40,9 +41,9 @@ class PostDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     success_url = reverse_lazy("post_list")
     permission_required = ('listings.delete_post',)
 
-    def test_func(self):
-        obj = self.get_object()
-        return obj.author == self.request.user
+    # def test_func(self):
+    #     obj = self.get_object()
+    #     return obj.author == self.request.user
 
 
 class PostUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
@@ -55,6 +56,19 @@ class PostUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         "content",
     )
 
-    def test_func(self):
-        obj = self.get_object()
-        return obj.author == self.request.user
+    # def test_func(self):
+    #     obj = self.get_object()
+    #     return obj.author == self.request.user
+
+
+class SearchResultsListView(ListView):
+    model = Post
+    context_object_name = 'listings_list'
+    template_name = 'listing/search_results.html'
+
+    def get_queryset(self):
+        query = self.request.GET.get("q")
+        return Post.objects.filter(
+            Q(title__icontains=query) | Q(author__author__username__contains=query)
+        )
+
