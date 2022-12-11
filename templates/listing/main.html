@@ -1,6 +1,5 @@
 {% extends 'flatpages/default.html' %}
 
-
 {% block title %}Доска объявлений{% endblock title %}
 
 {% block content %}
@@ -11,11 +10,16 @@
         &middot;
         <span class="text-muted">by {{ post.author }} |
             {{ post.register_date }}</span>
+        {% if post.postcategory_set.exists %}
+        <span style="float: right" class="text-muted">Категория {{ post.post_category.last }}</span>
+        {% endif %}
     </div>
     <div class="card-body">
         <p>{{ post.content|safe }}</p>
-{#        <a href="{% url 'article_edit' article.pk %}">Edit</a> |#}
-{#        <a href="{% url 'article_delete' article.pk %}">Delete</a>#}
+        {% if post.author.author == request.user %}
+            <a href="{% url 'post_edit' post.pk %}">Edit</a> |
+            <a href="{% url 'post_delete' post.pk %}">Delete</a>
+        {% endif %}
     </div>
     <div class="card-footer">
         {% for comm in post.comment_set.all %}
@@ -23,11 +27,29 @@
             <span class="font-weight-bold">
                 {{ comm.comment_author }} &middot;
             </span>
-            {{ comm.comment_text|safe }}
+            {{ comm.comment_text|safe }} &middot;
+            <span class="text-muted">{{ comm.comment_date }}</span>
         </p>
         {% endfor %}
     </div>
 <br />
 </div>
 {% endfor %}
+{#    {% if page_obj.has_previous %}#}
+{#        <a href="?{% url_replace page=1 %}">1</a>#}
+{#        {% if page_obj.previous_page_number != 1 %}#}
+{#            ...#}
+{#            <a href="?{% url_replace page=page_obj.previous_page_number %}">{{ page_obj.previous_page_number }}</a>#}
+{#        {% endif %}#}
+{#    {% endif %}#}
+{##}
+{#    {{ page_obj.number }}#}
+{##}
+{#    {% if page_obj.has_next %}#}
+{#        <a href="?{% url_replace page=page_obj.next_page_number %}">{{ page_obj.next_page_number }}</a>#}
+{#        {% if paginator.num_pages != page_obj.next_page_number %}#}
+{#            ...#}
+{#            <a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>#}
+{#        {% endif %}#}
+{#    {% endif %}#}
 {% endblock content %}

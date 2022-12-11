@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="billboard@localhost" uuid="018578f1-f50e-4857-8d78-48ab053f65bd">
+    <data-source source="LOCAL" name="billboard2@localhost" uuid="018578f1-f50e-4857-8d78-48ab053f65bd">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://localhost:5432/billboard</jdbc-url>
+      <jdbc-url>jdbc:postgresql://localhost:5432/billboard2</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
     <data-source source="LOCAL" name="Django default" uuid="a63c06bf-a428-4da9-a6d0-f5fd5f2ac709">

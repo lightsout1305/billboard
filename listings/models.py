@@ -63,9 +63,13 @@ class PostCategory(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.post.post_category.all().last()
+
 
 class Comment(models.Model):
     comment_text = RichTextUploadingField()
+    comment_post = models.ForeignKey(Post, on_delete=models.CASCADE)
     comment_author = models.ForeignKey(User, on_delete=models.CASCADE)
     comment_rating = models.SmallIntegerField(default=0)
     comment_date = models.DateTimeField(auto_now_add=True)
