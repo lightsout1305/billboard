@@ -176,3 +176,18 @@ ACCOUNT_EMAIL_VERIFICATION = 'none'
 ACCOUNT_LOGOUT_ON_GET = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_FORMS = {'signup': 'listings.forms.AuthorSignupForm'}
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = env.str('EMAIL_HOST')
+EMAIL_PORT = 465
+EMAIL_HOST_USER = env.str('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env.str('EMAIL_HOST_PASSWORD')
+EMAIL_USE_SSL = True
+
+ADMINS = [
+    (env.str('ADMIN_NICKNAME'), env.str('ADMIN_EMAIL')),
+]
+
+SERVER_EMAIL = env.str('SERVER_EMAIL')
+
+DEFAULT_FROM_EMAIL = env.str('SERVER_EMAIL')
