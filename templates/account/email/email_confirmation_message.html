@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+{% load i18n %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% trans "Confirmation" %}</title>
+</head>
+<body>
+    {% load account %}
+    <h1>{% trans "Thank you for the sign up" %}, {{ user.username }}!</h1>
+    <h3>{% trans "To activate your account, please follow" %} <a href="{{ activate_url }}">{% trans "the link" %}</a></h3>
+<h3>{% trans "Sincerely yours" %},</h3>
+    <h3>BillyBoard.inc</h3>
+</body>
+</html>

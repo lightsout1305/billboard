@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+{% load i18n %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% trans "Weekly articles feed" %}</title>
+</head>
+<body>
+<h1>{% trans "Hello" %}, {{ recipient }}! {% trans "Your fresh weekly feed on the" %} {{ category }} {% trans "is already here" %}!</h1>
+{% for feed in week_feed %}
+    <h3>{% trans "Title:" %} <a href="127.0.0.1/main/search/{{ feed.post.id }}"><strong>{{ feed.post.title }}</strong></a></h3>
+    <h4>{% trans "Summary" %} <strong>{{ feed.post.content|truncatechars:50 }}</strong></h4>
+{% endfor %}
+</body>
+</html>

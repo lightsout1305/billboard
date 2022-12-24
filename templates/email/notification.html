@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+{% load i18n %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% trans "Mailing list" %}</title>
+</head>
+<body>
+    <h1>{% trans "Hello" %}, <strong>{{ recipient }}</strong>! {% trans "A new post in your favorite category is here!" %}</h1>
+    <p>{% trans "Title" %}: <strong>{{ title }}</strong></p>
+    <p>{% trans "Summary:" %} <strong>{{ content|truncatechars:50 }}</strong></p>
+    <p>{% trans "To read the article, please follow" %} <a href="127.0.0.1/main/search/{{ pk }}" class="btn btn-outline-success">{% trans "the link" %}</a><br></p>
+<h3>{% trans "Sincerely yours," %}</h3>
+    <h3>{% trans "BillyBoard.inc" %}</h3>
+</body>
+</html>

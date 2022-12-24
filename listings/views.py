@@ -107,19 +107,18 @@ class SearchResultsListView(ListView):
         )
 
 
-class CategoryDetail(PermissionRequiredMixin, ListView):
+class CategoryDetail(ListView):
     model = Category
     context_object_name = 'category_detail'
     template_name = 'listing/main.html'
-    permission_required = ('news_project.view_category',)
 
     def get_context_data(self, **kwargs):
         id = self.kwargs.get('id')
         user = self.request.user
         context = super().get_context_data(**kwargs)
         context['category_post'] = Post.objects.filter(postcategory=id)
-        context['name'] = Category.objects.filter(id=id)
-        is_subscribed = CategorySubs.objects.filter(cat_sub_category_id=id, cat_sub_user=user).exists()
+        context['catgr'] = Category.objects.filter(id=id)
+        is_subscribed = CategorySubs.objects.filter(cat_sub_category_id=id, cat_sub_user_id=user.id).exists()
         context['is_subscribed'] = is_subscribed
         return context
 
@@ -128,7 +127,7 @@ class CategoryDetail(PermissionRequiredMixin, ListView):
 def add_subscription(request, pk):
     user = request.user
     catgr = Category.objects.get(id=pk)
-    is_subscribed = CategorySubs.objects.filter(cat_sub_user_id=user.id, cat_sub_category_id=catgr.id)
+    is_subscribed = CategorySubs.objects.filter(cat_sub_user_id=user.id, cat_sub_category_id=catgr.id).exists()
 
     if request.method == 'POST':
         if not is_subscribed:
@@ -171,7 +170,7 @@ def add_subscription(request, pk):
             msg.attach_alternative(html_content, 'text/html')
             msg.send()
 
-    return redirect('/main/')
+    return redirect('/')
 
 
 @login_required

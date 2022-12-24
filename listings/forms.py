@@ -33,7 +33,7 @@ class AuthorSignupForm(SignupForm):
 
     def save(self, request):
         user = super(AuthorSignupForm, self).save(request)
-        common_group = Group.objects.get(name='author')
-        common_group.user_set.add(user)
+        author_group = Group.objects.get(name='author')
+        author_group.user_set.add(user)
         Author.objects.create(author=user, author_id=user.id)
         return user

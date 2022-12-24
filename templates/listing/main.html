@@ -2,8 +2,6 @@
 
 {% load custom_tags %}
 
-{% block title %}Доска объявлений{% endblock title %}
-
 {% block content %}
 {% for post in listings %}
 <div class="card">
@@ -12,9 +10,27 @@
         &middot;
         <span class="text-muted">by {{ post.author }} |
             {{ post.register_date }}</span>
-        {% if post.postcategory_set.exists %}
-            <span style="float: right" class="text-muted">Категория {{ post.post_category.last }}</span>
-        {% endif %}
+        {% for nam in category_detail %}
+            {% if nam.category_name == post.post_category.last %}
+                    <span style="float: right" class="text-muted">Категория
+                        {% if is_subscribed %}
+                            <form method="post" action="{% url 'subscribe_to_category' nam.pk %}">
+                            {% csrf_token %}
+                                <a href="{% url 'subscribe_to_category' nam.id %}">
+                                    <button class="btn btn-outline-success">{{ post.post_category.last }}</button>
+                                </a>
+                            </form>
+                        {% else %}
+                            <form method="post" action="{% url 'unsubscribe_to_category' nam.pk %}">
+                            {% csrf_token %}
+                                <a href="{% url 'unsubscribe_to_category' nam.id %}">
+                                    <button class="btn btn-outline-danger">{{ post.post_category.last }}</button>
+                                </a>
+                            </form>
+                    </span>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
     </div>
     <div class="card-body">
         <p>{{ post.content|safe }}</p>
