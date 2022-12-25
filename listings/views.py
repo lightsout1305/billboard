@@ -107,10 +107,11 @@ class SearchResultsListView(ListView):
         )
 
 
-class CategoryDetail(ListView):
+class CategoryDetail(PermissionRequiredMixin, ListView):
     model = Category
     context_object_name = 'category_detail'
-    template_name = 'listing/main.html'
+    template_name = 'listing/cat_subs.html'
+    permission_required = ('listings.view_category',)
 
     def get_context_data(self, **kwargs):
         id = self.kwargs.get('id')
@@ -119,7 +120,7 @@ class CategoryDetail(ListView):
         context['category_post'] = Post.objects.filter(postcategory=id)
         context['catgr'] = Category.objects.filter(id=id)
         is_subscribed = CategorySubs.objects.filter(cat_sub_category_id=id, cat_sub_user_id=user.id).exists()
-        context['is_subscribed'] = is_subscribed
+        context['subscribe'] = is_subscribed
         return context
 
 
@@ -177,9 +178,9 @@ def add_subscription(request, pk):
 def remove_subscription(request, pk):
     user = request.user
     catgr = Category.objects.get(id=pk)
-    if CategorySubs.objects.filter(linked_user_id=user.id):
-        CategorySubs.objects.filter(linked_category_id=catgr.id, linked_user_id=user.id).delete()
-    return redirect('/main/')
+    if CategorySubs.objects.filter(cat_sub_user_id=user.id):
+        CategorySubs.objects.filter(cat_sub_category_id=catgr.id, cat_sub_user_id=user.id).delete()
+    return redirect('/')
 
 
 def add_comment_like(request, pk):

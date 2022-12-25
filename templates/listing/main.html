@@ -9,28 +9,28 @@
         <a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a>
         &middot;
         <span class="text-muted">by {{ post.author }} |
-            {{ post.register_date }}</span>
-        {% for nam in category_detail %}
-            {% if nam.category_name == post.post_category.last %}
-                    <span style="float: right" class="text-muted">Категория
-                        {% if is_subscribed %}
-                            <form method="post" action="{% url 'subscribe_to_category' nam.pk %}">
-                            {% csrf_token %}
-                                <a href="{% url 'subscribe_to_category' nam.id %}">
-                                    <button class="btn btn-outline-success">{{ post.post_category.last }}</button>
-                                </a>
-                            </form>
-                        {% else %}
-                            <form method="post" action="{% url 'unsubscribe_to_category' nam.pk %}">
-                            {% csrf_token %}
-                                <a href="{% url 'unsubscribe_to_category' nam.id %}">
-                                    <button class="btn btn-outline-danger">{{ post.post_category.last }}</button>
-                                </a>
-                            </form>
-                    </span>
-                {% endif %}
+            {{ post.register_date }}
+            {% if post.rating %}
+           | Рейтинг {{ post.rating }}
             {% endif %}
-        {% endfor %}
+        </span>
+            <div>
+                {% if request.user.is_authenticated %}
+                    <form style="float: left; margin-right: 2px; margin-top: 5px" action="{% url 'add_content_like' post.pk %}">
+                        {% csrf_token %}
+                        <button class="btn btn-outline-success">Like</button>
+                    </form>
+                    <form style="float: left; margin-right: 2px; margin-top: 5px" action="{% url 'add_content_dislike' post.pk %}">
+                        {% csrf_token %}
+                        <button class="btn btn-outline-danger">Dislike</button>
+                    </form>
+                {% endif %}
+            </div>
+            <span style="float: right" class="text-muted">
+                {% if post.postcategory_set.exists %}
+                    <a href="/categories/">Категория</a>
+                     {{ post.post_category.last }}</span>
+                {% endif %}
     </div>
     <div class="card-body">
         <p>{{ post.content|safe }}</p>

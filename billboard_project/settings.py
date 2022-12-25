@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'crispy_forms',
     'crispy_bootstrap5',
+    'celery',
     # Local apps
     'listings.apps.ListingsConfig',
 ]
@@ -198,3 +199,11 @@ ADMINS = [
 SERVER_EMAIL = env.str('SERVER_EMAIL')
 
 DEFAULT_FROM_EMAIL = env.str('SERVER_EMAIL')
+
+# For RabbitMQ
+CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672//'
+# Celery Data Format
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Europe/Moscow'

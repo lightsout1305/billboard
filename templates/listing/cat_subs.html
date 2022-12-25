@@ -1,0 +1,34 @@
+{% extends 'flatpages/default.html' %}
+{% load i18n %}
+
+{% load custom_tags %}
+
+{% block title %}{% trans "Category subscribtion" %}{% endblock title %}
+
+{% block content %}
+<html lang="rus">
+<h3>{% trans "Select the category to subscribe" %}</h3>
+    <hr>
+{% for name in category_detail %}
+<form action="{% url 'subscribe_to_category' name.id %}" method="post">{% csrf_token %}
+    <h6>
+        <a href="{% url 'subscribe_to_category' name.id %}">
+            <button class="btn btn-outline-success">{% trans "Subscribe to" %} {{ name }}</button>
+        </a>
+    </h6>
+</form>
+{% endfor %}
+
+<h3 style="margin-top: 50px">{% trans "Select the category to unsubscribe" %}</h3>
+    <hr>
+{% for name in category_detail %}
+<form action="{% url 'unsubscribe_to_category' name.id %}" method="post">{% csrf_token %}
+    <h6>
+        <a href="{% url 'unsubscribe_to_category' name.id %}">
+            <button class="btn btn-outline-danger">{% trans "Unsubscribe from" %} {{ name }}</button>
+        </a>
+    </h6>
+</form>
+{% endfor %}
+{% endblock content %}
+</html>

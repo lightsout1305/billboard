@@ -17,7 +17,7 @@ def notify_subscribers(sender, instance, action, **kwargs):
                     subject=instance.title,
                     body=instance.content,
                     from_email=SERVER_EMAIL,
-                    to=[subscribe.linked_user.email, ],
+                    to=[subscribe.cat_sub_user.email, ],
                 )
                 html_content = render_to_string(
                     'email/notification.html',
@@ -33,7 +33,7 @@ def notify_subscribers(sender, instance, action, **kwargs):
                 msg.attach_alternative(html_content, 'text/html')
                 msg.send()
 
-                print(f'Тема письма: {instance.title}\nСодержание: {instance.content}')
+                print(f'Тема письма: {instance.title}\n')
                 print(f'Уведомление отослано подписчику {subscribe.cat_sub_user} '
                       f'на почту {subscribe.cat_sub_user.email} '
                       f'на тему {subscribe.cat_sub_category}')

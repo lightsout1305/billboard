@@ -1,6 +1,7 @@
 {% extends 'flatpages/default.html' %}
 {% load static %}
 {% load crispy_forms_filters %}
+{% load i18n %}
 
 {% load crispy_forms_tags %}
 <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
@@ -9,14 +10,31 @@
 {% block content %}
 <div class="article-entry">
     <h2>{{ one_post.title }}</h2>
-    <p>by {{ one_post.author }} | {{ one_post.date }}</p>
+    <p>by {{ one_post.author }} | {{ one_post.register_date }}
+        {% if one_post.postcategory_set.exists %}
+           | {{ one_post.post_category.last }}</p>
+        {% endif %}
     <p>{{ one_post.content|safe }}</p>
 </div>
 
 <hr>
 <h4>Comments</h4>
-{% for comm in one_post.comment_set.all %}
-<p>{{ comm.comment_author }} &middot; {{ comm.comment_text }}</p>
+{% for com in one_post.comment_set.all %}
+    {% if com %}
+        <p align="left"><strong>{{ com.comment_author }}</strong> &middot; {{ com.comment_text }}</p>
+        <p align="left">{% trans "Rating" %}: {{ com.comment_rating }}</p>
+            {% if request.user.is_authenticated %}
+                <form style="margin-bottom: 10px" action="{% url 'add_comment_like' com.pk %}" method="post">
+                    {% csrf_token %}
+                    <button style="margin-right: 1600px" class="btn btn-outline-success">Like</button>
+                </form>
+                <form action="{% url 'add_comment_dislike' com.pk %}" method="post">
+                    {% csrf_token %}
+                    <button style="margin-right: 1600px" class="btn btn-outline-danger">Dislike</button>
+                </form>
+            {% endif %}
+    {% endif %}
+    <hr>
 {% endfor %}
 <hr>
 
