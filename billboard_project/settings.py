@@ -29,7 +29,7 @@ SECRET_KEY = env.str('BILLBOARD_DJANGO')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool('DEBUG', default=False)
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -96,11 +96,11 @@ WSGI_APPLICATION = 'billboard_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'billboard2',
         'USER': 'postgres',
         'PASSWORD': env.str('PASSWORD_DB'),
-        'HOST': 'localhost',
+        'HOST': '172.27.144.1',
         'PORT': 5432,
     }
 }
@@ -135,6 +135,9 @@ AUTHENTICATION_BACKENDS = [
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'Europe/Moscow'
+
+CELERY_ENABLE_UTC = False
+CELERY_TIMEZONE = TIME_ZONE
 
 USE_I18N = True
 
@@ -173,7 +176,7 @@ LOGIN_REDIRECT_URL = '/'
 
 LOGOUT_REDIRECT_URL = '/'
 
-ACCOUNT_EMAIL_VERIFICATION = 'email'
+ACCOUNT_EMAIL_VERIFICATION = True
 ACCOUNT_LOGOUT_ON_GET = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_REQUIRED = True
@@ -201,9 +204,9 @@ SERVER_EMAIL = env.str('SERVER_EMAIL')
 DEFAULT_FROM_EMAIL = env.str('SERVER_EMAIL')
 
 # For RabbitMQ
-CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672//'
+CELERY_BROKER_URL = 'amqp://guest@localhost:5672//'
 # Celery Data Format
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TIMEZONE = 'Europe/Moscow'
+

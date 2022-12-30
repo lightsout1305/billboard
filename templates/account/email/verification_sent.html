@@ -1,0 +1,22 @@
+{% extends 'flatpages/default.html' %}
+<html><head>
+    <title>Verify Your E-mail Address</title>
+  </head>
+  <body>
+    <div>
+      <strong>Messages:</strong>
+      <ul>
+        <li>Confirmation e-mail sent to {{ user.email }}.</li>
+      </ul>
+    </div>
+    <div>
+      <strong>Menu:</strong>
+      <ul>
+        <li><a href="/accounts/login/">Sign In</a></li>
+        <li><a href="/accounts/signup/">Sign Up</a></li>
+      </ul>
+    </div>
+    <h1>Verify Your E-mail Address</h1>
+    <p>We have sent an e-mail to you for verification. Follow the link provided to finalize the signup process. If you do not see the verification e-mail in your main inbox, check your spam folder. Please contact us if you do not receive the verification e-mail within a few minutes.</p>
+</body>
+</html>

@@ -97,6 +97,7 @@ class SearchResultsListView(ListView):
     model = Post
     context_object_name = 'listings_list'
     template_name = 'listing/search_results.html'
+    ordering = ['-title']
     paginate_by = 10
     queryset = Post.objects.all().order_by('id')
 
