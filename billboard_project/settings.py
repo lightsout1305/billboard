@@ -100,7 +100,7 @@ DATABASES = {
         'NAME': 'billboard2',
         'USER': 'postgres',
         'PASSWORD': env.str('PASSWORD_DB'),
-        'HOST': '172.27.144.1',
+        'HOST': env.str('POSTGRES_SERVER'),
         'PORT': 5432,
     }
 }

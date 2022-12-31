@@ -9,7 +9,7 @@ from .models import Post, Comment, Author
 class PostForm(ModelForm):
     class Meta:
         model = Post
-        fields = ['title', 'content', 'post_category',]
+        fields = ['title', 'content', 'post_category', ]
 
     def clean(self):
         cleaned_data = super().clean()
@@ -26,7 +26,7 @@ class PostForm(ModelForm):
 class CommentForm(ModelForm):
     class Meta:
         model = Comment
-        fields = ['comment_text',]
+        fields = ['comment_text', ]
 
 
 class AuthorSignupForm(SignupForm):
